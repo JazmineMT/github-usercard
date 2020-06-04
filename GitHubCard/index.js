@@ -64,8 +64,8 @@ function getUsers(person) {
   }
 
 
-followersArray.forEach((something) =>{
-  getUsers(something);
+followersArray.forEach((gitHubUser) =>{
+  getUsers(gitHubUser);
 })
 
 
