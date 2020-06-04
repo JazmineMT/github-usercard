@@ -1,8 +1,19 @@
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
-    https://api.github.com/users/<your name>
+    https://api.github.com/users/JazmineMT
 */
+  
+ const jazmine = axios.get('https://api.github.com/users/JazmineMT')
+ .then(response => {
+  console.log(response.data)
+  gitCardMaker(response.data)
+
+  const cards = document.querySelector('.cards')
+  cards.appendChild(gitCardMaker(response.data))
+})
+
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +39,35 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'tetondan' ,
+  'dustinmyers' ,
+  'justsml' ,
+  'luishrd',
+
+];
+
+function getUsers(person) {
+
+  axios.get(`https://api.github.com/users/${person}`)
+  .then(response => {
+
+    console.log(response.data)
+    gitCardMaker(response.data)
+  
+    const cards = document.querySelector('.cards')
+    cards.appendChild(gitCardMaker(response.data))
+
+    
+  
+    })
+  }
+
+
+followersArray.forEach((gitHubUser) =>{
+  getUsers(gitHubUser);
+})
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -52,9 +91,62 @@ const followersArray = [];
 
 /*
   List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
+    'https://api.github.com/users/tetondan' ,
+    'https://api.github.com/users/dustinmyers' ,
+   'https://api.github.com/users/justsml' ,
+    'https://api.github.com/users/luishrd'
 */
+
+
+
+
+function gitCardMaker (githubUser){
+
+const {avatar_url, bio, followers, following, html_url, location, login, name} = githubUser
+ 
+const cardDiv = document.createElement('div')
+const image = document.createElement('img')
+const cardInfo = document.createElement('div')
+const theName = document.createElement('h3')
+const userName = document.createElement('p')
+const theLocation = document.createElement('p')
+const theProfile = document.createElement('p')
+const link = document.createElement('a')
+const theFollower = document.createElement('p')
+const theFollowing = document.createElement('p')
+const theBio = document.createElement('p')
+
+cardDiv.appendChild(image)
+cardDiv.appendChild(cardInfo)
+cardInfo.appendChild(theName)
+cardInfo.appendChild(userName)
+cardInfo.appendChild(theLocation)
+cardInfo.appendChild(theProfile)
+theProfile.appendChild(link)
+cardInfo.appendChild(theFollower)
+cardInfo.appendChild(theFollowing)
+cardInfo.appendChild(theBio)
+
+cardDiv.classList.add('card')
+cardInfo.classList.add('card-info')
+theName.classList.add('name')
+userName.classList.add('username')
+
+image.src= avatar_url
+link.href = html_url
+theProfile.textContent = `Profile: ${link}`
+theName.textContent = name
+userName.textContent = login 
+theLocation.textContent =`Location: ${location}`
+theFollower.textContent = `Followers: ${followers}`
+theFollowing.textContent =  `Following: ${following}`
+theBio.textContent = `Bio: ${bio}` 
+
+
+
+console.log(cardDiv)
+
+return cardDiv
+
+}
+
